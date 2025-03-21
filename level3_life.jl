@@ -11,19 +11,38 @@ function step!(state::Life)
     curr = state.current_frame
     next = state.next_frame
 
-    #=
-    TODO: вместо случайного шума
-    реализовать один шаг алгоритма "Игра жизнь"
-    =#
-    for i in 1:length(curr)
-        curr[i] = rand(0:1)
+    # Реализация одного шага алгоритма "Игра жизни"
+    for i in 1:size(curr, 1)
+        for j in 1:size(curr, 2)
+            neighbors = 0
+            for x in [-1, 0, 1]
+                for y in [-1, 0, 1]
+                    if !(x == 0 && y == 0)
+                        ni = mod1(i + x, size(curr, 1))  # Граничные условия (тор)
+                        nj = mod1(j + y, size(curr, 2))
+                        neighbors += curr[ni, nj]
+                    end
+                end
+            end
+
+            if curr[i, j] == 1  # Если клетка жива
+                if neighbors < 2 || neighbors > 3
+                    next[i, j] = 0  # Умирает от одиночества или перенаселённости
+                else
+                    next[i, j] = 1  # Выживает
+                end
+            else  # Если клетка мертва
+                if neighbors == 3
+                    next[i, j] = 1  # Оживление
+                else
+                    next[i, j] = 0  # Остается мертвой
+                end
+            end
+        end
     end
 
-    # Подсказка для граничных условий - тор:
-    # julia> mod1(10, 30)
-    # 10
-    # julia> mod1(31, 30)
-    # 1
+    # Обновляем текущее состояние после завершения вычислений
+    state.current_frame .= next
 
     return nothing
 end

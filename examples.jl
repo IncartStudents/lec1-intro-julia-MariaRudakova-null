@@ -28,7 +28,7 @@ ntuple.hex
 ntuple.str
 ntuple.num1 == ntuple[1]
 
-ntuple.str = "bye" # кортежи иммутабельны - их нельзя менять
+# ntuple.str = "bye" # кортежи иммутабельны - их нельзя менять
 
 ntuple2 = (ntuple..., str = "bye") # можно только создать новый
 
@@ -40,7 +40,7 @@ m = [1 2 3; 4 5 6; 7 8 9]
 m * v
 2 * v
 
-v * v # такое умножение отсутствует
+# v * v # такое умножение отсутствует
 v .* v # но можно указать поэлементное умножение
 v' * v
 
@@ -121,21 +121,21 @@ end
 
 # структуры
 
+mutable struct Bar
+    a::Int
+    b::String
+end
+
 struct Foo
     a::Int
     b::String
     c::Bar
 end
 
-mutable struct Bar
-    a::Int
-    b::String
-end
-
 # методы структуры
 
-f = Foo(1, "qwerty")
-f.a = 2 # структуры по умолчанию иммутабельны
+f = Foo(1, "qwerty", Bar(42, ""))
+# f.a = 2 # структуры по умолчанию иммутабельны
 
 b = Bar(1, "qwerty")
 b.a = 2
@@ -147,9 +147,9 @@ end
 # массив структур
 
 vec_of_foo = [
-    Foo(1, "qwerty"),
-    Foo(2, "asdfgh"),
-    Foo(3, "zxcvb")
+    Foo(1, "qwerty", b),
+    Foo(2, "asdfgh", b),
+    Foo(3, "zxcvb", b)
 ]
 
 # словари (ключ - значение)
